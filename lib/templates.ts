@@ -24,7 +24,6 @@ const MODERNO_TEXT = "#1A1A1A";
 
 const ELEGANTE_BASE = "#F4EFE6";
 const ELEGANTE_TEXT = "#2B2724";
-const ELEGANTE_BORDER = "#B8924B";
 
 const ILUSTRADO_BASE = "#FBF1E7";
 
@@ -43,7 +42,7 @@ const templates: Template[] = EVENT_TYPES.flatMap((type) =>
       case "moderno":
         return { id, eventType: type, name: s.label, style: s.style, backgroundColor: MODERNO_BASE, textColor: MODERNO_TEXT, accentColor: accent, emoji: s.emoji };
       case "elegante":
-        return { id, eventType: type, name: s.label, style: s.style, backgroundColor: ELEGANTE_BASE, textColor: ELEGANTE_TEXT, accentColor: ELEGANTE_BORDER, emoji: s.emoji };
+        return { id, eventType: type, name: s.label, style: s.style, backgroundColor: ELEGANTE_BASE, textColor: ELEGANTE_TEXT, accentColor: accent, emoji: s.emoji };
       case "ilustrado":
         return { id, eventType: type, name: s.label, style: s.style, backgroundColor: ILUSTRADO_BASE, textColor: MODERNO_TEXT, accentColor: accent, emoji: s.emoji };
     }

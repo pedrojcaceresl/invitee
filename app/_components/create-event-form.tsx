@@ -1,0 +1,148 @@
+"use client";
+
+import { useState } from "react";
+
+interface Props {
+  onCreated: (result: { slug: string; editToken: string }) => void;
+}
+
+const EVENT_TYPES = [
+  { value: "birthday", label: "Cumpleaños" },
+  { value: "wedding", label: "Casamiento" },
+  { value: "graduation", label: "Graduación" },
+  { value: "babyshower", label: "Baby shower" },
+  { value: "other", label: "Otro" },
+] as const;
+
+export default function CreateEventForm({ onCreated }: Props) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form));
+
+    const body = {
+      name: data.name as string,
+      type: data.type as string,
+      date: (data.date as string) || null,
+      location: (data.location as string) || null,
+      message: (data.message as string) || null,
+      templateId: "birthday-1",
+      shareMode: "combined",
+    };
+
+    try {
+      const res = await fetch("/api/events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json.error ?? "Error al crear el evento");
+      }
+
+      const json = await res.json();
+      onCreated({ slug: json.slug, editToken: json.editToken });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error inesperado");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div>
+        <label className="block text-sm font-medium text-gray-700" htmlFor="name">
+          Nombre del evento *
+        </label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          required
+          maxLength={100}
+          placeholder="Cumple de Ana"
+          className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700" htmlFor="type">
+          Tipo de evento *
+        </label>
+        <select
+          id="type"
+          name="type"
+          required
+          className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+          {EVENT_TYPES.map((t) => (
+            <option key={t.value} value={t.value}>
+              {t.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700" htmlFor="date">
+          Fecha
+        </label>
+        <input
+          id="date"
+          name="date"
+          type="date"
+          className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700" htmlFor="location">
+          Lugar
+        </label>
+        <input
+          id="location"
+          name="location"
+          type="text"
+          maxLength={200}
+          placeholder="Casa de Ana, Palermo"
+          className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700" htmlFor="message">
+          Mensaje para los invitados
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          maxLength={500}
+          rows={3}
+          placeholder="¡Todos invitados!"
+          className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+      </div>
+
+      {error && (
+        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>
+      )}
+
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60"
+      >
+        {loading ? "Creando..." : "Crear evento"}
+      </button>
+    </form>
+  );
+}

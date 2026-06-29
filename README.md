@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Invitee
 
-## Getting Started
+Creá en minutos una tarjeta de invitación y lista de regalos para tu evento, compartible con un solo link. Sin login.
 
-First, run the development server:
+[invitee-navy.vercel.app](https://invitee-navy.vercel.app)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## Qué hace
+
+- Creá un evento (cumpleaños, boda, graduación, baby shower, otro)
+- Elegí entre **3 estilos de tarjeta**: Moderno, Elegante, Ilustrado
+- Subí una foto personalizada
+- Agregá una lista de regalos con links de compra
+- Elegí cómo compartir: solo tarjeta, solo lista, o tarjeta + QR a la lista
+- Descargá la tarjeta como PNG
+- Compartí con un solo link — cada evento recibe preview con OG metadata
+
+---
+
+## Stack
+
+| Capa | Tecnología |
+|---|---|
+| Frontend | Next.js 16 (App Router) |
+| Estilos | Tailwind CSS v4, Radix UI |
+| Animaciones | Framer Motion |
+| Tipografía | Sora (display), Inter (body) |
+| Base de datos | Firebase Firestore |
+| Archivos | Vercel Blob Storage |
+| Generación de imágenes | `next/og` (Satori) |
+| QR | `qrcode` |
+| Validación | Zod v4 |
+| Tests | Vitest |
+| Deploy | Vercel |
+
+---
+
+## Arquitectura
+
+El proyecto sigue el patrón **Ports & Adapters**: los Route Handlers no importan Firebase directamente. Llaman a interfaces en `/lib/ports/` cuya implementación actual está en `/lib/adapters/`. Esto permite migrar a otro backend cambiando un solo archivo.
+
+```
+lib/
+├── ports/          → Interfaces (EventRepository, GiftRepository, StorageProvider)
+├── adapters/
+│   ├── firebase/   → Implementaciones con Firebase Admin SDK
+│   ├── in-memory/  → Fakes para tests
+│   └── vercel-blob/→ Upload de fotos con Vercel Blob
+├── data/index.ts   → Punto único de inyección
+├── templates.ts    → 15 plantillas (3 estilos × 5 tipos de evento)
+├── illustrations.tsx → 5 motivos SVG de línea fina (Estilo Ilustrado)
+└── types.ts        → Tipos compartidos
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Cómo correr localmente
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Requisitos
 
-## Learn More
+- Node.js 18+
+- Un proyecto Firebase con Firestore habilitado
+- Una cuenta Vercel con Blob Storage habilitado
 
-To learn more about Next.js, take a look at the following resources:
+### Instalación
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+git clone https://github.com/pedrojcaceresl/invitee.git
+cd invitee
+npm install
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Variables de entorno
 
-## Deploy on Vercel
+Copiá `.env.example` a `.env.local` y completá:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+cp .env.example .env.local
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Variables requeridas:
+
+| Variable | Descripción |
+|---|---|
+| `FIREBASE_PROJECT_ID` | ID del proyecto Firebase |
+| `FIREBASE_CLIENT_EMAIL` | Email de la service account |
+| `FIREBASE_PRIVATE_KEY` | Private key de la service account |
+| `FIREBASE_STORAGE_BUCKET` | Bucket de Firebase Storage (requerido por Admin SDK, aunque no se use para uploads) |
+| `BLOB_READ_WRITE_TOKEN` | Token de Vercel Blob Storage |
+
+### Desarrollo
+
+```bash
+npm run dev        # Servidor en http://localhost:3000
+npm run test       # 37 tests con Vitest
+npm run test:watch # Tests en modo watch
+npm run lint       # ESLint
+npm run build      # Build de producción
+```
+
+---
+
+## Proyecto
+
+Hecho con amor por [Pedro](https://www.linkedin.com/in/pedrojcaceresl/).

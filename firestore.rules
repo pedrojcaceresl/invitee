@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Todo acceso directo desde el cliente está bloqueado.
+    // Toda lectura/escritura pasa por el servidor (Admin SDK via Route Handlers).
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

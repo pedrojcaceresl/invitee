@@ -220,8 +220,24 @@ Detalle completo de interfaces, implementación y trade-offs: ver **ADR-001 (`ad
 - Analytics de visitas
 - Multi-idioma
 - Agregar regalos por invitados (decisión: solo el organizador puede agregar)
+- Modo oscuro
 
-## 7. Decisiones registradas (changelog)
+---
+
+## 7. Fuera de alcance (backlog futuro)
+- Cuentas de usuario / login social
+- Múltiples eventos por usuario logueado
+- Notificaciones
+- "Regalo grupal" con aportes/cuotas
+- Marcar regalo como reservado (removido del MVP por conflicto con la sorpresa — ver Iteración 2; si se reincorpora, requiere ocultarlo del organizador-receptor y delegar el "deshacer" al invitado)
+- QR para imprimir en invitaciones físicas
+- Modo privado con contraseña
+- Editor de tarjeta con personalización libre de colores/fuentes
+- Analytics de visitas
+- Multi-idioma
+- Agregar regalos por invitados (decisión: solo el organizador puede agregar)
+
+## 8. Decisiones registradas (changelog)
 | Pregunta | Decisión |
 |---|---|
 | Plantillas por tipo de evento | 3 |
@@ -233,3 +249,6 @@ Detalle completo de interfaces, implementación y trade-offs: ver **ADR-001 (`ad
 | Capa de datos | Ports & Adapters sobre Firebase (ADR-001) |
 | Frontend | Next.js + Tailwind + Radix |
 | Animaciones | Framer Motion |
+| Color de acento | Azul tinta `#2C4A7C` |
+| Tipografía | Sora (display) + Inter (body) |
+| Modo oscuro | No incluido en el MVP |

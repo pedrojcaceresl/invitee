@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Sora, Inter } from "next/font/google";
 import "./globals.css";
 
-const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const sora = Sora({ variable: "--font-sora", subsets: ["latin"], display: "swap" });
+const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
   title: "Invitee — Creá tu invitación y lista de regalos",
@@ -19,8 +20,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es" className={`${geist.variable} h-full antialiased`}>
-      <body className="min-h-full bg-white text-gray-900">{children}</body>
+    <html lang="es" className={`${sora.variable} ${inter.variable} h-full antialiased`}>
+      <body className="min-h-full bg-paper text-ink font-sans">{children}</body>
     </html>
   );
 }

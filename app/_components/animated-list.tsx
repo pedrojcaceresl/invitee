@@ -5,15 +5,15 @@ import type { Gift } from "@/lib/types";
 
 function GiftCard({ gift }: { gift: Gift }) {
   return (
-    <li className="rounded-lg border border-gray-200 p-4">
+    <li className="rounded-card border border-border bg-surface p-4">
       <div className="flex items-start justify-between gap-2">
         <div>
-          <p className="font-medium text-gray-900">{gift.name}</p>
+          <p className="font-medium text-ink">{gift.name}</p>
           {gift.description && (
-            <p className="mt-1 text-sm text-gray-500">{gift.description}</p>
+            <p className="mt-1 text-sm text-ink-muted">{gift.description}</p>
           )}
           {gift.approxPrice != null && (
-            <p className="mt-1 text-sm text-gray-400">
+            <p className="mt-1 text-sm text-ink-muted">
               ~${gift.approxPrice.toLocaleString("es-AR")}
             </p>
           )}
@@ -23,7 +23,7 @@ function GiftCard({ gift }: { gift: Gift }) {
             href={gift.purchaseLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="shrink-0 rounded bg-indigo-600 px-3 py-1 text-sm text-white hover:bg-indigo-700"
+            className="shrink-0 rounded-control bg-accent px-3 py-1 text-sm text-white hover:bg-accent/90"
           >
             Ver
           </a>
@@ -35,7 +35,7 @@ function GiftCard({ gift }: { gift: Gift }) {
 
 export default function AnimatedGiftList({ gifts }: { gifts: Gift[] }) {
   if (gifts.length === 0) {
-    return <p className="text-gray-400">Todavía no hay regalos en la lista.</p>;
+    return <p className="text-ink-muted">Todavía no hay regalos en la lista.</p>;
   }
 
   return (

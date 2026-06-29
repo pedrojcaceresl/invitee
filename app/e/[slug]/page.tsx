@@ -31,12 +31,14 @@ export default async function EventPage({ params }: Props) {
   return (
     <main className="mx-auto max-w-lg px-4 py-10 sm:py-14">
       <header className="mb-8 text-center">
-        <p className="text-xs font-semibold uppercase tracking-widest text-indigo-500">
+        <p className="text-xs font-semibold uppercase tracking-widest text-accent">
           {event.type}
         </p>
-        <h1 className="mt-2 text-3xl font-bold leading-tight sm:text-4xl">{event.name}</h1>
+        <h1 className="font-display mt-2 text-3xl font-bold leading-tight text-ink sm:text-4xl">
+          {event.name}
+        </h1>
         {event.date && (
-          <p className="mt-2 text-gray-500">
+          <p className="mt-2 text-ink-muted">
             {new Date(event.date).toLocaleDateString("es-AR", {
               day: "numeric",
               month: "long",
@@ -44,9 +46,9 @@ export default async function EventPage({ params }: Props) {
             })}
           </p>
         )}
-        {event.location && <p className="mt-1 text-gray-500">{event.location}</p>}
+        {event.location && <p className="mt-1 text-ink-muted">{event.location}</p>}
         {event.message && (
-          <p className="mt-4 italic text-gray-600">&ldquo;{event.message}&rdquo;</p>
+          <p className="mt-4 italic text-ink-muted">&ldquo;{event.message}&rdquo;</p>
         )}
       </header>
 
@@ -56,7 +58,7 @@ export default async function EventPage({ params }: Props) {
             href={`/api/events/${slug}/card`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block rounded-xl border border-gray-200 p-2 shadow-sm hover:border-indigo-300 hover:shadow-md transition-shadow"
+            className="inline-block rounded-card border border-border p-2 shadow-sm hover:border-accent hover:shadow-md transition-shadow"
             title="Ver tarjeta de invitación"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -65,16 +67,16 @@ export default async function EventPage({ params }: Props) {
               alt="Tarjeta de invitación"
               width={340}
               height={340}
-              className="rounded-lg"
+              className="rounded-card"
             />
           </a>
-          <p className="mt-2 text-xs text-gray-400">Tocá para descargar la tarjeta</p>
+          <p className="mt-2 text-xs text-ink-muted">Tocá para descargar la tarjeta</p>
         </section>
       )}
 
       {showList && (
         <section className="mb-8">
-          <h2 className="mb-4 text-xl font-semibold">Lista de regalos</h2>
+          <h2 className="mb-4 text-xl font-semibold text-ink">Lista de regalos</h2>
           <AnimatedGiftList gifts={gifts} />
         </section>
       )}
@@ -83,9 +85,9 @@ export default async function EventPage({ params }: Props) {
 
       {qrSvg && (
         <section className="mt-10 flex flex-col items-center">
-          <p className="mb-3 text-sm text-gray-500">Compartí este QR con tus invitados</p>
+          <p className="mb-3 text-sm text-ink-muted">Compartí este QR con tus invitados</p>
           <div
-            className="w-36 rounded-xl border border-gray-200 p-3"
+            className="w-36 rounded-card border border-border p-3"
             dangerouslySetInnerHTML={{ __html: qrSvg }}
           />
         </section>

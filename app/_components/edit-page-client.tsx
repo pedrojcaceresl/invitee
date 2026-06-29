@@ -12,6 +12,9 @@ interface Props {
   editToken: string;
 }
 
+const inputClass =
+  "w-full rounded-control border border-border bg-surface px-3 py-2 text-sm text-ink placeholder:text-ink-muted focus:outline-none focus:ring-2 focus:ring-accent";
+
 export default function EditPageClient({ event, initialGifts, slug, editToken }: Props) {
   const [gifts, setGifts] = useState<Gift[]>(initialGifts);
   const [currentTemplateId, setCurrentTemplateId] = useState(event.templateId);
@@ -117,20 +120,19 @@ export default function EditPageClient({ event, initialGifts, slug, editToken }:
 
   return (
     <main className="mx-auto max-w-xl px-4 py-12 space-y-10">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{event.name}</h1>
-          <p className="text-sm text-gray-500">Panel de edición</p>
+          <h1 className="font-display text-2xl font-bold text-ink">{event.name}</h1>
+          <p className="text-sm text-ink-muted">Panel de edición</p>
         </div>
-        <a href={`/e/${slug}`} className="text-sm text-indigo-600 hover:underline">
+        <a href={`/e/${slug}`} className="text-sm text-accent hover:underline">
           Ver evento →
         </a>
       </div>
 
       {/* Template selector */}
       <section>
-        <h2 className="mb-3 text-lg font-semibold text-gray-800">Plantilla de tarjeta</h2>
+        <h2 className="mb-3 text-lg font-semibold text-ink">Plantilla de tarjeta</h2>
         <div className="grid grid-cols-3 gap-3">
           {templates.map((t) => (
             <TemplatePreview
@@ -146,14 +148,14 @@ export default function EditPageClient({ event, initialGifts, slug, editToken }:
             href={`/api/events/${slug}/card`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-indigo-600 hover:underline"
+            className="text-sm text-accent hover:underline"
           >
             Ver preview de tarjeta →
           </a>
           <a
             href={`/api/events/${slug}/card`}
             download={`invitacion-${slug}.png`}
-            className="rounded bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-700"
+            className="rounded-control bg-accent px-3 py-1.5 text-sm font-medium text-white hover:bg-accent/90"
           >
             Descargar tarjeta
           </a>
@@ -162,7 +164,7 @@ export default function EditPageClient({ event, initialGifts, slug, editToken }:
 
       {/* Share mode */}
       <section>
-        <h2 className="mb-3 text-lg font-semibold text-gray-800">Modo de compartir</h2>
+        <h2 className="mb-3 text-lg font-semibold text-ink">Modo de compartir</h2>
         <div className="grid grid-cols-3 gap-3">
           {(
             [
@@ -174,14 +176,14 @@ export default function EditPageClient({ event, initialGifts, slug, editToken }:
             <button
               key={opt.value}
               onClick={() => handleSelectShareMode(opt.value)}
-              className={`rounded-xl border-2 p-3 text-left transition-all ${
+              className={`rounded-card border-2 p-3 text-left transition-colors ${
                 shareMode === opt.value
-                  ? "border-indigo-500 bg-indigo-50"
-                  : "border-gray-200 hover:border-gray-300"
+                  ? "border-accent bg-accent/10"
+                  : "border-border hover:border-ink-muted"
               }`}
             >
-              <p className="text-sm font-semibold text-gray-800">{opt.label}</p>
-              <p className="mt-0.5 text-xs text-gray-400">{opt.description}</p>
+              <p className="text-sm font-semibold text-ink">{opt.label}</p>
+              <p className="mt-0.5 text-xs text-ink-muted">{opt.description}</p>
             </button>
           ))}
         </div>
@@ -189,14 +191,14 @@ export default function EditPageClient({ event, initialGifts, slug, editToken }:
 
       {/* Photo upload */}
       <section>
-        <h2 className="mb-3 text-lg font-semibold text-gray-800">Foto personalizada</h2>
+        <h2 className="mb-3 text-lg font-semibold text-ink">Foto personalizada</h2>
         {photoUrl ? (
           <div className="mb-3">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={photoUrl} alt="Foto del evento" className="h-40 w-full rounded-lg object-cover" />
+            <img src={photoUrl} alt="Foto del evento" className="h-40 w-full rounded-card object-cover" />
           </div>
         ) : (
-          <p className="mb-3 text-sm text-gray-400">Sin foto aún.</p>
+          <p className="mb-3 text-sm text-ink-muted">Sin foto aún.</p>
         )}
         <input
           ref={fileInputRef}
@@ -208,55 +210,28 @@ export default function EditPageClient({ event, initialGifts, slug, editToken }:
         <button
           onClick={() => fileInputRef.current?.click()}
           disabled={uploadingPhoto}
-          className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-60"
+          className="rounded-control border border-border px-4 py-2 text-sm text-ink hover:bg-paper disabled:opacity-60"
         >
           {uploadingPhoto ? "Subiendo..." : photoUrl ? "Cambiar foto" : "Subir foto"}
         </button>
-        {photoError && (
-          <p className="mt-2 text-sm text-red-600">{photoError}</p>
-        )}
+        {photoError && <p className="mt-2 text-sm text-error">{photoError}</p>}
       </section>
 
       {/* Add gift form */}
       <section>
-        <h2 className="mb-3 text-lg font-semibold text-gray-800">Agregar regalo</h2>
+        <h2 className="mb-3 text-lg font-semibold text-ink">Agregar regalo</h2>
         <form onSubmit={handleAddGift} className="space-y-3">
-          <input
-            name="name"
-            type="text"
-            required
-            maxLength={200}
-            placeholder="Nombre del regalo *"
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-          <input
-            name="description"
-            type="text"
-            maxLength={500}
-            placeholder="Descripción (opcional)"
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-          <input
-            name="purchaseLink"
-            type="url"
-            placeholder="Link de compra (opcional)"
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-          <input
-            name="approxPrice"
-            type="number"
-            min={0}
-            step={1}
-            placeholder="Precio aprox. (opcional)"
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
+          <input name="name" type="text" required maxLength={200} placeholder="Nombre del regalo *" className={inputClass} />
+          <input name="description" type="text" maxLength={500} placeholder="Descripción (opcional)" className={inputClass} />
+          <input name="purchaseLink" type="url" placeholder="Link de compra (opcional)" className={inputClass} />
+          <input name="approxPrice" type="number" min={0} step={1} placeholder="Precio aprox. (opcional)" className={inputClass} />
           {giftError && (
-            <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{giftError}</p>
+            <p className="rounded-control bg-error/10 px-3 py-2 text-sm text-error">{giftError}</p>
           )}
           <button
             type="submit"
             disabled={adding}
-            className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60"
+            className="w-full rounded-control bg-accent px-4 py-2.5 text-sm font-semibold text-white hover:bg-accent/90 disabled:opacity-60"
           >
             {adding ? "Agregando..." : "Agregar regalo"}
           </button>
@@ -265,32 +240,30 @@ export default function EditPageClient({ event, initialGifts, slug, editToken }:
 
       {/* Gift list */}
       <section>
-        <h2 className="mb-3 text-lg font-semibold text-gray-800">
+        <h2 className="mb-3 text-lg font-semibold text-ink">
           Lista de regalos ({gifts.length})
         </h2>
         {gifts.length === 0 ? (
-          <p className="text-gray-400">Todavía no hay regalos.</p>
+          <p className="text-ink-muted">Todavía no hay regalos.</p>
         ) : (
           <ul className="space-y-3">
             {gifts.map((g) => (
               <li
                 key={g.id}
-                className="flex items-start justify-between gap-3 rounded-lg border border-gray-200 p-4"
+                className="flex items-start justify-between gap-3 rounded-card border border-border bg-surface p-4"
               >
                 <div>
-                  <p className="font-medium text-gray-900">{g.name}</p>
-                  {g.description && (
-                    <p className="mt-0.5 text-sm text-gray-500">{g.description}</p>
-                  )}
+                  <p className="font-medium text-ink">{g.name}</p>
+                  {g.description && <p className="mt-0.5 text-sm text-ink-muted">{g.description}</p>}
                   {g.approxPrice != null && (
-                    <p className="mt-0.5 text-sm text-gray-400">
+                    <p className="mt-0.5 text-sm text-ink-muted">
                       ~${g.approxPrice.toLocaleString("es-AR")}
                     </p>
                   )}
                 </div>
                 <button
                   onClick={() => handleDelete(g.id)}
-                  className="shrink-0 text-sm text-red-500 hover:text-red-700"
+                  className="shrink-0 text-sm text-error hover:text-error/80"
                 >
                   Borrar
                 </button>
@@ -315,22 +288,16 @@ function TemplatePreview({
   return (
     <button
       onClick={onSelect}
-      className={`rounded-xl border-2 p-3 text-left transition-all ${
-        selected ? "border-indigo-500 shadow-md" : "border-gray-200 hover:border-gray-300"
+      className={`rounded-card border-2 p-3 text-left transition-colors ${
+        selected ? "border-accent shadow-md" : "border-border hover:border-ink-muted"
       }`}
       style={{ backgroundColor: template.backgroundColor }}
     >
       <div style={{ fontSize: 28 }}>{template.emoji}</div>
-      <div
-        className="mt-1 text-xs font-semibold"
-        style={{ color: template.textColor }}
-      >
+      <div className="mt-1 text-xs font-semibold" style={{ color: template.textColor }}>
         {template.name}
       </div>
-      <div
-        className="mt-0.5 h-1 w-8 rounded"
-        style={{ backgroundColor: template.accentColor }}
-      />
+      <div className="mt-0.5 h-1 w-8 rounded" style={{ backgroundColor: template.accentColor }} />
     </button>
   );
 }

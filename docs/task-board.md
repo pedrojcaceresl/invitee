@@ -6,7 +6,7 @@ Estado compartido entre roles. Cada agente lee este archivo antes de actuar y lo
 
 ---
 
-## Iteración activa: Iteración 0 — Setup y esqueleto
+## Iteración activa: Iteración 6 — Sistema de diseño
 
 | ID | Tarea | Estado | Rol actual | Última actualización | Notas / feedback |
 |---|---|---|---|---|---|
@@ -20,6 +20,19 @@ Estado compartido entre roles. Cada agente lee este archivo antes de actuar y lo
 | IT0-08 | Deploy inicial a Vercel: landing vacía visible, `/api/health` responde 200 en producción | Hecha | — | 2026-06-29 | ✅ Aprobado Reviewer + Tester. `{"status":"ok"}` verificado en https://invitee-navy.vercel.app/api/health |
 
 ---
+
+---
+
+## Iteración 6 — Sistema de diseño ✅ COMPLETA
+
+| ID | Tarea | Estado | Rol actual | Última actualización | Notas / feedback |
+|---|---|---|---|---|---|
+| IT6-01 | Tokens de color en `globals.css` via `@theme inline` (Tailwind v4) | Hecha | — | 2026-06-29 | ✅ 9 tokens: paper/surface/border/ink/ink-muted/accent/seal-gold/success/error + radius-control/card. |
+| IT6-02 | Sora (display) + Inter (body) via `next/font`, reemplazar Geist | Hecha | — | 2026-06-29 | ✅ Variables `--font-sora`/`--font-inter`, `font-display`/`font-sans` disponibles como utilidades Tailwind. |
+| IT6-03 | Componentes base Button/Input/Textarea/Select/Card en `app/_components/ui/` | Hecha | — | 2026-06-29 | ✅ Con tokens de color y radius. Para uso en código nuevo. |
+| IT6-04 | Migrar tokens en todos los componentes existentes (sin colores sueltos) | Hecha | — | 2026-06-29 | ✅ indigo→accent, gray→ink/ink-muted/border/paper/surface, red→error, green→success en 6 archivos. |
+| IT6-05 | Animación de sello (scale+rotate, 600ms ease-out, Seal Gold) en confirmación | Hecha | — | 2026-06-29 | ✅ SVG seal con monograma "I", anima desde scale(0.2) rotate(-20°). Único momento animado "fuerte". |
+| IT6-06 | Favicon con motivo sello (`app/icon.svg`) | Hecha | — | 2026-06-29 | ✅ Sello dorado con monograma I. Registrado automáticamente por Next.js App Router. |
 
 ---
 

@@ -14,6 +14,11 @@ const EVENT_TYPES = [
   { value: "other", label: "Otro" },
 ] as const;
 
+const inputClass =
+  "mt-1 w-full rounded-control border border-border bg-surface px-3 py-2 text-sm text-ink placeholder:text-ink-muted focus:outline-none focus:ring-2 focus:ring-accent";
+
+const labelClass = "block text-sm font-medium text-ink-muted";
+
 export default function CreateEventForm({ onCreated }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -60,7 +65,7 @@ export default function CreateEventForm({ onCreated }: Props) {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <label className="block text-sm font-medium text-gray-700" htmlFor="name">
+        <label className={labelClass} htmlFor="name">
           Nombre del evento *
         </label>
         <input
@@ -70,20 +75,15 @@ export default function CreateEventForm({ onCreated }: Props) {
           required
           maxLength={100}
           placeholder="Cumple de Ana"
-          className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className={inputClass}
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700" htmlFor="type">
+        <label className={labelClass} htmlFor="type">
           Tipo de evento *
         </label>
-        <select
-          id="type"
-          name="type"
-          required
-          className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        >
+        <select id="type" name="type" required className={inputClass}>
           {EVENT_TYPES.map((t) => (
             <option key={t.value} value={t.value}>
               {t.label}
@@ -93,19 +93,14 @@ export default function CreateEventForm({ onCreated }: Props) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700" htmlFor="date">
+        <label className={labelClass} htmlFor="date">
           Fecha
         </label>
-        <input
-          id="date"
-          name="date"
-          type="date"
-          className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
+        <input id="date" name="date" type="date" className={inputClass} />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700" htmlFor="location">
+        <label className={labelClass} htmlFor="location">
           Lugar
         </label>
         <input
@@ -114,12 +109,12 @@ export default function CreateEventForm({ onCreated }: Props) {
           type="text"
           maxLength={200}
           placeholder="Casa de Ana, Palermo"
-          className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className={inputClass}
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700" htmlFor="message">
+        <label className={labelClass} htmlFor="message">
           Mensaje para los invitados
         </label>
         <textarea
@@ -128,18 +123,18 @@ export default function CreateEventForm({ onCreated }: Props) {
           maxLength={500}
           rows={3}
           placeholder="¡Todos invitados!"
-          className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className={inputClass}
         />
       </div>
 
       {error && (
-        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>
+        <p className="rounded-control bg-error/10 px-3 py-2 text-sm text-error">{error}</p>
       )}
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60"
+        className="w-full rounded-control bg-accent px-4 py-2.5 text-sm font-semibold text-white hover:bg-accent/90 disabled:opacity-60"
       >
         {loading ? "Creando..." : "Crear evento"}
       </button>

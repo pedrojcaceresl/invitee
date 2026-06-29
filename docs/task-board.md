@@ -79,7 +79,7 @@ IT7-08 (tests)             ← paralelo final
 | IT6-03 | Componentes base Button/Input/Textarea/Select/Card en `app/_components/ui/` | Hecha | — | 2026-06-29 | ✅ Con tokens de color y radius. Para uso en código nuevo. |
 | IT6-04 | Migrar tokens en todos los componentes existentes (sin colores sueltos) | Hecha | — | 2026-06-29 | ✅ indigo→accent, gray→ink/ink-muted/border/paper/surface, red→error, green→success en 6 archivos. |
 | IT6-05 | Animación de sello (scale+rotate, 600ms ease-out, Seal Gold) en confirmación | Hecha | — | 2026-06-29 | ✅ SVG seal con monograma "I", anima desde scale(0.2) rotate(-20°). Único momento animado "fuerte". |
-| IT6-06 | Favicon con motivo sello (`app/icon.svg`) | Hecha | — | 2026-06-29 | ✅ Sello dorado con monograma I. Registrado automáticamente por Next.js App Router. |
+| IT6-06 | Favicon con motivo sello (`app/icon.svg`) | Hecha | — | 2026-06-29 | ✅ Sello dorado con monograma I. Fix 2026-06-29: borrado `app/favicon.ico` (default de Vercel que pisaba el icon.svg). Agregado `metadataBase`, `twitter` card, y `opengraph-image.tsx` (1200×630) para previsualización al compartir links. |
 
 ---
 

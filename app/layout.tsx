@@ -6,13 +6,26 @@ const sora = Sora({ variable: "--font-sora", subsets: ["latin"], display: "swap"
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "https://invitee-navy.vercel.app"
+  ),
   title: "Invitee — Creá tu invitación y lista de regalos",
   description:
     "Creá en minutos una tarjeta de invitación y lista de regalos compartible con un solo link. Sin login.",
   openGraph: {
-    title: "Invitee",
-    description: "Invitaciones y listas de regalos en segundos.",
+    title: "Invitee — Creá tu invitación y lista de regalos",
+    description:
+      "Creá en minutos una tarjeta de invitación y lista de regalos compartible con un solo link. Sin login.",
+    siteName: "Invitee",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Invitee — Creá tu invitación y lista de regalos",
+    description:
+      "Creá en minutos una tarjeta de invitación y lista de regalos compartible con un solo link. Sin login.",
   },
 };
 

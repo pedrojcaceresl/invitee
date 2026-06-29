@@ -207,8 +207,111 @@ Detalle completo de interfaces, implementación y trade-offs: ver **ADR-001 (`ad
 **Definición de Hecho:** la experiencia se siente pulida y rápida en mobile, que es el canal principal de uso.
 
 ---
+### Iteración 6 — Sistema de diseño
+ 
+**Dirección:** limpio, minimalista, moderno, fácil de usar. Solo modo claro (no se implementa modo oscuro). El "tono de evento" vive en las plantillas de tarjeta (Iteración 3), no en el shell de la app — esto mantiene la interfaz minimalista sin perder identidad festiva donde corresponde. El único gesto celebratorio en el shell es la animación de sello al confirmar la creación de un evento; el resto se mantiene deliberadamente quieto.
+ 
+**Tokens de color**
+| Token | Hex | Uso |
+|---|---|---|
+| Paper (bg) | `#FAFAFC` | Fondo de página |
+| Surface | `#FFFFFF` | Cards, inputs |
+| Border | `#E7E4ED` | Bordes, divisores |
+| Ink | `#211D2C` | Texto principal |
+| Ink Muted | `#6E6A7C` | Texto secundario |
+| Accent (Azul tinta) | `#2C4A7C` | Botón primario, links, focus ring |
+| Seal Gold | `#D9A441` | Acento celebratorio puntual (sello de confirmación) |
+| Success | `#3F8361` | Confirmaciones de formulario |
+| Error | `#C1453C` | Errores de validación |
+ 
+**Tipografía**
+| Rol | Fuente | Uso |
+|---|---|---|
+| Display | Sora (600/700) | Encabezados, nombre del evento, marca "Invitee" |
+| Body / UI | Inter (400/500) | Formularios, texto de cuerpo, botones, labels |
+ 
+**Otros tokens**
+- Radio de borde: `10px` controles (botón, input), `16px` cards/tarjeta
+- Espaciado base: `4px`, ritmo vertical en múltiplos de 8/12/16/24
+- Motion: transiciones rápidas y simples (fade/slide, sin bounce) en general; la animación de "sello" (scale + rotate, ~600ms ease-out) es la única excepción deliberada, reservada al momento de crear un evento o generar la tarjeta
+**Requerimientos (EARS)**
+- EL SISTEMA DEBE implementar únicamente modo claro en el MVP.
+- EL SISTEMA DEBE usar los tokens de color y tipografía definidos en esta sección en todos los componentes — sin colores o fuentes ad-hoc fuera de este set.
+- CUANDO se crea un evento exitosamente, EL SISTEMA DEBE reproducir la animación de sello una sola vez como confirmación.
+**Tareas**
+- Configurar el theme de Tailwind con estos tokens (color, radius, spacing)
+- Cargar Sora e Inter vía `next/font`
+- Construir componentes base sobre Radix (Button primario/ghost, Input, Card) con estos estilos
+- Implementar la animación de sello con Framer Motion en la confirmación de creación de evento
+- Definir favicon/logomark basado en el motivo del sello
+**Tests**
+- Visual: capturas de los componentes base contra esta tabla de tokens
+- Accesibilidad: contraste de texto cumple WCAG AA (ink sobre paper, blanco sobre azul tinta)
+- Manual: la animación de sello se dispara una sola vez por creación, no en cada render
+**Definición de Hecho:** toda la UI usa estos tokens de forma consistente, sin colores sueltos, y el sello es el único momento animado "fuerte" de la app.
+ 
+---
 
-## 6. Fuera de alcance (backlog futuro)
+### Iteración 7 — Diseño de las plantillas de tarjeta (3 estilos)
+ 
+**Objetivo:** que las 3 plantillas por tipo de evento (15 combinaciones en total) tengan un sistema de diseño real detrás — no "estilo libre" sin criterio. Se definen **3 arquetipos de estilo**, cada uno con su propio sistema de color/tipografía/layout, aplicados consistentemente a los 5 tipos de evento.
+ 
+**Por qué 3 arquetipos fijos en vez de 15 diseños sueltos:** mantiene coherencia visual dentro de cada estilo (alguien que elige "Elegante" para una boda y alguien que elige "Elegante" para un cumpleaños deberían sentir la misma calidad de diseño), y hace que agregar un tipo de evento nuevo en el futuro sea aplicar los 3 sistemas ya definidos, no diseñar de cero.
+ 
+#### Estilo 1 — Moderno
+| Token | Valor |
+|---|---|
+| Base | Marfil `#F7F5F0` |
+| Texto | Tinta `#1A1A1A` |
+| Acento (varía por tipo de evento) | Cumpleaños `#FF5A36` · Boda `#2C4A7C` · Graduación `#1F7A5C` · Baby shower `#D9A441` · Otro `#A23E5C` |
+| Display | Geométrico oversized, mayúsculas (ej. Space Grotesk 700) |
+| Body | Inter 400, chico, alineado a un borde |
+ 
+**Layout:** asimétrico. Un bloque sólido del color de acento cubre ~35-40% del lienzo en un lado; el nombre del evento, en tipografía oversized, se recorta sobre el borde entre el bloque de color y el fondo claro — la tipografía funciona como elemento gráfico, no solo como texto. La foto (si se sube) va en un recuadro chico y nítido, nunca de fondo completo.
+**Firma:** el nombre del evento tratado como pieza gráfica recortada sobre el bloque de color.
+ 
+#### Estilo 2 — Elegante
+| Token | Valor |
+|---|---|
+| Base | Marfil cálido `#F4EFE6` |
+| Texto | Carbón `#2B2724` |
+| Detalle (línea, no relleno) | Dorado `#B8924B` |
+| Display | Serif refinado (ej. Fraunces 500, letterspacing leve en mayúsculas) |
+| Body | Inter 300, muy liviano |
+ 
+**Layout:** simétrico, centrado, márgenes generosos. Doble línea fina enmarca el contenido, como una tarjetería impresa. Un monograma o inicial del nombre del evento sobre el título — no un ícono genérico.
+**Firma:** el marco de línea doble + el monograma. La elegancia vive en el espacio en blanco y la tipografía, sin adornos de más.
+ 
+#### Estilo 3 — Ilustrado
+| Token | Valor |
+|---|---|
+| Base | Pastel cálido `#FBF1E7` |
+| Acento (mismo set que Moderno, para coherencia cross-estilo) | Cumpleaños `#FF5A36` · Boda `#2C4A7C` · Graduación `#1F7A5C` · Baby shower `#D9A441` · Otro `#A23E5C` |
+| Display | Redondeado/amigable (ej. Fredoka 600) |
+| Body | Inter 400 |
+ 
+**Layout:** un motivo ilustrado en SVG de línea fina enmarca el contenido — varía por tipo de evento: globos + serpentinas (cumpleaños), ramo/anillos (boda), birrete + diploma (graduación), móvil de cuna (baby shower), confeti genérico (otro). El motivo se diseña una sola vez por tipo de evento (5 motivos en total) y se reutiliza en este estilo.
+**Firma:** la técnica del trazo — mismo grosor de línea y estilo en los 5 motivos, aunque el objeto cambie. Es la consistencia lo que da la sensación de sistema, no la variedad de objetos.
+ 
+**Requerimientos (EARS)**
+- CUANDO el organizador elige un estilo de plantilla, EL SISTEMA DEBE aplicar el token system completo de ese estilo (color, tipografía, layout) — nunca una mezcla entre estilos.
+- EL SISTEMA DEBE renderizar correctamente los 3 estilos con o sin foto subida, sin que el layout se rompa en ningún caso.
+- EL SISTEMA DEBE mantener legibilidad (contraste WCAG AA) del texto sobre cada combinación de fondo/acento, en los 5 tipos de evento.
+**Tareas**
+- Implementar cada estilo como componente de maquetado parametrizado (nombre, fecha, lugar, mensaje, foto opcional), compatible con `satori`
+- Diseñar los 5 motivos SVG de línea fina para el Estilo Ilustrado (uno por tipo de evento)
+- Generar los 15 previews estáticos (3 estilos × 5 tipos) para el selector de plantilla
+- Revisar contraste de texto en las 15 combinaciones
+**Tests**
+- Visual: cada combinación renderiza sin overlap de texto con un nombre de evento largo (ej. "Cumpleaños de cincuenta años de la abuela Margarita")
+- Integration: el componente de plantilla no rompe el layout cuando no hay foto subida
+- Accesibilidad: contraste de texto cumple WCAG AA en las 15 combinaciones
+- E2E: elegir cada uno de los 3 estilos en el selector → la tarjeta generada refleja el sistema de diseño correcto
+**Definición de Hecho:** las 15 combinaciones (3 estilos × 5 tipos de evento) están terminadas, documentadas como sistema (no como diseños sueltos), y ninguna se rompe con texto largo o sin foto.
+
+---
+
+## 8. Fuera de alcance (backlog futuro)
 - Cuentas de usuario / login social
 - Múltiples eventos por usuario logueado
 - Notificaciones
@@ -224,20 +327,7 @@ Detalle completo de interfaces, implementación y trade-offs: ver **ADR-001 (`ad
 
 ---
 
-## 7. Fuera de alcance (backlog futuro)
-- Cuentas de usuario / login social
-- Múltiples eventos por usuario logueado
-- Notificaciones
-- "Regalo grupal" con aportes/cuotas
-- Marcar regalo como reservado (removido del MVP por conflicto con la sorpresa — ver Iteración 2; si se reincorpora, requiere ocultarlo del organizador-receptor y delegar el "deshacer" al invitado)
-- QR para imprimir en invitaciones físicas
-- Modo privado con contraseña
-- Editor de tarjeta con personalización libre de colores/fuentes
-- Analytics de visitas
-- Multi-idioma
-- Agregar regalos por invitados (decisión: solo el organizador puede agregar)
-
-## 8. Decisiones registradas (changelog)
+## 9. Decisiones registradas (changelog)
 | Pregunta | Decisión |
 |---|---|
 | Plantillas por tipo de evento | 3 |

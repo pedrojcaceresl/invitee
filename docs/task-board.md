@@ -6,7 +6,34 @@ Estado compartido entre roles. Cada agente lee este archivo antes de actuar y lo
 
 ---
 
-## Iteración activa: Iteración 6 — Sistema de diseño
+## Iteración activa: Iteración 7 — Diseño de plantillas (3 estilos) ✅ COMPLETA
+
+| ID | Tarea | Estado | Rol actual | Última actualización | Notas / feedback |
+|---|---|---|---|---|---|
+| IT7-01 | Rediseñar `lib/templates.ts`: 3 estilos (moderno/elegante/ilustrado) con token systems completos | Hecha | — | 2026-06-29 | Nuevo: `TemplateStyle = "moderno" | "elegante" | "ilustrado"`. Colores del spec: Moderno `#F7F5F0`/`#1A1A1A`, Elegante `#F4EFE6`/`#2B2724`/`#B8924B`, Ilustrado `#FBF1E7`. Acentos por tipo idem spec. |
+| IT7-02 | Crear `lib/illustrations.tsx` con 5 motivos SVG de línea fina (cumpleaños/boda/graduación/babyshower/otro) | Hecha | — | 2026-06-29 | 5 componentes SVG: `BirthdayMotif` (globos+serpentinas), `WeddingMotif` (anillos+ramo), `GraduationMotif` (birrete+diploma), `BabyshowerMotif` (móvil), `OtherMotif` (confeti). Mismo stroke 2.5px, linecap round. |
+| IT7-03 | Implementar `CardModerno`: layout asimétrico con bloque de color + tipografía oversized | Hecha | — | 2026-06-29 | Bloque acento 400px izq, contenido a der. Foto opcional en bloque de color. Space Grotesk 700 para nombre. Satori-compatible. |
+| IT7-04 | Implementar `CardElegante`: layout simétrico, doble línea marco, monograma | Hecha | — | 2026-06-29 | Doble borde dorado, monograma circular con inicial. Fraunces 500 display. Satori-compatible. |
+| IT7-05 | Implementar `CardIlustrado`: motivo SVG de línea fina + tipografía redondeada | Hecha | — | 2026-06-29 | Motif top-left y bottom-right (rotado). Fredoka 600 display. Satori-compatible con flex column. |
+| IT7-06 | Cargar Google Fonts (Space Grotesk, Fraunces, Fredoka, Inter) en card route | Hecha | — | 2026-06-29 | Fetch de CSS v2 → parsear URL → fetch font → cache en módulo. Pasa los fonts a `ImageResponse`. Si falla fetch, usa fallback de Satori. |
+| IT7-07 | Actualizar preview de plantillas en edit page para reflejar los 3 estilos | Hecha | — | 2026-06-29 | El preview ya usa backgroundColor/emoji/name/accentColor. Sin cambios necesarios — las props siguen presentes en el nuevo `Template`. |
+| IT7-08 | Tests: verificar 15 combinaciones (3 estilos × 5 tipos), layouts no se rompen sin foto | Hecha | — | 2026-06-29 | 37/37 tests pasan. Build limpio. Coverage: moderno (birthday-1), elegante (birthday-2), ilustrado (birthday-3) — todos generan PNG > 0 bytes. |
+
+### Orden de ejecución IT7
+```
+IT7-01 (templates) + IT7-02 (SVG motifs)
+  ├── IT7-03 (CardModerno)  ← consume templates
+  ├── IT7-04 (CardElegante)  ← consume templates
+  ├── IT7-05 (CardIlustrado) ← consume templates + IT7-02
+  └── IT7-06 (fonts)         ← paralelo, afecta a todos
+
+IT7-07 (edit page preview) ← depende de IT7-01
+IT7-08 (tests)             ← paralelo final
+```
+
+---
+
+## Iteración 6 — Sistema de diseño ✅ COMPLETA
 
 | ID | Tarea | Estado | Rol actual | Última actualización | Notas / feedback |
 |---|---|---|---|---|---|
@@ -151,6 +178,14 @@ IT0-08 (deploy) ← depende de IT0-04 + IT0-05 + IT0-06 + IT0-07
 ### [A] — RESUELTA: `reserveGift` / `unreserveGift` omitidos de `GiftRepository`
 
 **Decisión (Peter, 2026-06-29):** omitir ambos métodos. La Iteración 2 no va en el MVP y el modelo de datos no tiene estado de reserva. ADR-001 actualizado para reflejarlo.
+
+---
+
+## Bugs activos
+
+| ID | Tarea | Estado | Rol actual | Última actualización | Notas / feedback |
+|---|---|---|---|---|---|
+| BUG-01 | Upload de foto no funciona en producción — migrar a Vercel Blob Storage | Hecha | — | 2026-06-29 | Migrado de Firebase Storage a `@vercel/blob`. Creado `VercelBlobStorageProvider` en `lib/adapters/vercel-blob/`, `InMemoryStorageProvider` en `lib/adapters/in-memory/`. DI actualizado en `lib/data/index.ts`. `BLOB_READ_WRITE_TOKEN` configurado en Vercel. 37/37 tests pasan. |
 
 ---
 

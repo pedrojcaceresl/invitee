@@ -46,7 +46,7 @@ describe("GET /api/events/[slug]/card", () => {
     expect(res.status).toBe(404);
   });
 
-  it("genera tarjeta con layout bold", async () => {
+  it("genera tarjeta con estilo elegante", async () => {
     const { GET } = await import("@/app/api/events/[slug]/card/route");
     const { event } = await holder.event!.createEvent({ ...baseEvent, templateId: "birthday-2" });
 
@@ -58,7 +58,7 @@ describe("GET /api/events/[slug]/card", () => {
     expect(buffer.byteLength).toBeGreaterThan(0);
   });
 
-  it("genera tarjeta con layout minimal", async () => {
+  it("genera tarjeta con estilo ilustrado", async () => {
     const { GET } = await import("@/app/api/events/[slug]/card/route");
     const { event } = await holder.event!.createEvent({ ...baseEvent, templateId: "birthday-3" });
 

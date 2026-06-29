@@ -1,6 +1,6 @@
 import { FirebaseEventRepository } from "@/lib/adapters/firebase/firebase-event-repository";
 import { FirebaseGiftRepository } from "@/lib/adapters/firebase/firebase-gift-repository";
-import { FirebaseStorageProvider } from "@/lib/adapters/firebase/firebase-storage-provider";
+import { VercelBlobStorageProvider } from "@/lib/adapters/vercel-blob/vercel-blob-storage-provider";
 import type { EventRepository } from "@/lib/ports/event-repository";
 import type { GiftRepository } from "@/lib/ports/gift-repository";
 import type { StorageProvider } from "@/lib/ports/storage-provider";
@@ -15,5 +15,5 @@ export function getGiftRepository(): GiftRepository {
 }
 
 export function getStorageProvider(): StorageProvider {
-  return new FirebaseStorageProvider();
+  return new VercelBlobStorageProvider();
 }

@@ -6,7 +6,17 @@ Estado compartido entre roles. Cada agente lee este archivo antes de actuar y lo
 
 ---
 
-## Iteración activa: Iteración 7 — Diseño de plantillas (3 estilos) ✅ COMPLETA
+## Iteración activa: Iteración 8 — OG metadata y link preview ✅ COMPLETA
+
+| ID | Tarea | Estado | Rol actual | Última actualización | Notas / feedback |
+|---|---|---|---|---|---|
+| IT8-01 | `generateMetadata` en `/e/[slug]` con título, descripción y foto del evento | Hecha | — | 2026-06-29 | `og:title` = nombre del evento, `og:description` = tipo · fecha · lugar · mensaje, `og:image` = `/api/events/[slug]/card` (1080×1080 PNG). Twitter card: `summary_large_image`. |
+| IT8-02 | Dedeuplicar fetch del evento con `React.cache()` | Hecha | — | 2026-06-29 | `getEvent(slug)` cacheado comparte la misma promesa entre `generateMetadata` y el page component. Una sola lectura a Firestore por request. |
+| IT8-03 | Extraer `BASE_URL` y `formatDate` como constantes/funciones compartidas | Hecha | — | 2026-06-29 | Limpia el hardcode duplicado de la URL y el formateo de fechas. |
+
+---
+
+## Iteración 7 — Diseño de plantillas (3 estilos) ✅ COMPLETA
 
 | ID | Tarea | Estado | Rol actual | Última actualización | Notas / feedback |
 |---|---|---|---|---|---|

@@ -6,7 +6,17 @@ Estado compartido entre roles. Cada agente lee este archivo antes de actuar y lo
 
 ---
 
-## Iteración activa: Iteración 8 — OG metadata y link preview ✅ COMPLETA
+## Iteración activa: Iteración 9 — Instructivo y tour ✅ COMPLETA
+
+| ID | Tarea | Estado | Rol actual | Última actualización | Notas / feedback |
+|---|---|---|---|---|---|
+| IT9-01 | Página `/como-usar` con guía paso a paso | Hecha | — | 2026-06-29 | 4 pasos ilustrados (crear evento → personalizar tarjeta → agregar regalos → compartir). Estática, sin dependencias. |
+| IT9-02 | Tour onboarding con tooltips en la landing | Hecha | — | 2026-06-29 | Usa `driver.js` v1.6.0. 5 pasos que resaltan campos del formulario: nombre, tipo, fecha/lugar, mensaje, botón crear. |
+| IT9-03 | Link "¿Cómo usar?" + botón "¿Cómo crear un evento?" en landing | Hecha | — | 2026-06-29 | Links con estilo de borde, consistentes con el diseño. Reutilizan tokens de color. |
+
+---
+
+## Iteración 8 — OG metadata y link preview ✅ COMPLETA
 
 | ID | Tarea | Estado | Rol actual | Última actualización | Notas / feedback |
 |---|---|---|---|---|---|

@@ -64,7 +64,7 @@ export default function CreateEventForm({ onCreated }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      <div>
+      <div id="tour-name">
         <label className={labelClass} htmlFor="name">
           Nombre del evento *
         </label>
@@ -79,7 +79,7 @@ export default function CreateEventForm({ onCreated }: Props) {
         />
       </div>
 
-      <div>
+      <div id="tour-type">
         <label className={labelClass} htmlFor="type">
           Tipo de evento *
         </label>
@@ -92,14 +92,14 @@ export default function CreateEventForm({ onCreated }: Props) {
         </select>
       </div>
 
-      <div>
+      <div id="tour-date">
         <label className={labelClass} htmlFor="date">
           Fecha
         </label>
         <input id="date" name="date" type="date" className={inputClass} />
       </div>
 
-      <div>
+      <div id="tour-location">
         <label className={labelClass} htmlFor="location">
           Lugar
         </label>
@@ -113,7 +113,7 @@ export default function CreateEventForm({ onCreated }: Props) {
         />
       </div>
 
-      <div>
+      <div id="tour-message">
         <label className={labelClass} htmlFor="message">
           Mensaje para los invitados
         </label>
@@ -132,6 +132,7 @@ export default function CreateEventForm({ onCreated }: Props) {
       )}
 
       <button
+        id="tour-submit"
         type="submit"
         disabled={loading}
         className="w-full rounded-control bg-accent px-4 py-2.5 text-sm font-semibold text-white hover:bg-accent/90 disabled:opacity-60"
